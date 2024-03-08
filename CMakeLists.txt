@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(NNCompiler)
+project(TFLCompiler)
 
 add_subdirectory(3rd_party/flatbuffers)
 add_subdirectory(3rd_party/gtest)

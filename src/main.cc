@@ -6,9 +6,7 @@
 #include "core.h"
 
 int main(int argc, char* argv[]) {
-    Core core("test.tflite");
+    ::testing::InitGoogleTest(&argc, argv);
 
-    std::cout << "hello world!" << std::endl;
-
-    return 0;
+    return RUN_ALL_TESTS();
 }

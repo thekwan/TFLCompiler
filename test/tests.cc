@@ -1,10 +1,11 @@
 #include "gtest/gtest.h"
 #include "spdlog/spdlog.h"
 
-#include "core.h"
+#include "tcore.h"
 
 TEST(BASIC, OpenModelFile) {
-    Core core("utest1.tflite");
+    TCore tcore("mnist.tflite");
+    tcore.display_info();
 
-    EXPECT_TRUE(core.isOpened());
+    EXPECT_TRUE(tcore.isOpened());
 }

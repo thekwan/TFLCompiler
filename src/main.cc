@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 #include "schema_v3a_generated.h"
 
-#include "core.h"
+#include "tcore.h"
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

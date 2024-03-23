@@ -9,7 +9,8 @@
 
 class TSubGraph {
 public:
-    TSubGraph(const tflite::SubGraph* sg);
+    TSubGraph(const tflite::SubGraph* sg,
+            const flatbuffers::Vector<flatbuffers::Offset<tflite::OperatorCode>>* operator_codes);
     ~TSubGraph(void);
 
     void display_info(void);

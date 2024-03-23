@@ -5,7 +5,7 @@ TModel::TModel(const char* buf) {
     model_ = tflite::GetModel(buf);
 
     for (auto sg : *(model_->subgraphs())) {
-        subgraphs_.push_back(std::make_shared<TSubGraph>(sg));
+        subgraphs_.push_back(std::make_shared<TSubGraph>(sg, model_->operator_codes()));
     }
 
     spdlog::info("TModel is created!");

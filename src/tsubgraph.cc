@@ -1,7 +1,8 @@
 #include "tsubgraph.h"
 #include "spdlog/spdlog.h"
 
-TSubGraph::TSubGraph(const tflite::SubGraph* sg) {
+TSubGraph::TSubGraph(const tflite::SubGraph* sg,
+        const flatbuffers::Vector<flatbuffers::Offset<tflite::OperatorCode>>* operator_codes) {
     subgraph_ = sg;
 
     int i = 0;
@@ -9,8 +10,9 @@ TSubGraph::TSubGraph(const tflite::SubGraph* sg) {
         tensors_.push_back(std::make_shared<TTensor>(t, i++));
     }
 
+    i = 0;
     for (auto o : *subgraph_->operators()) {
-        operators_.push_back(std::make_shared<TOperator>(o));
+        operators_.push_back(std::make_shared<TOperator>(o, i++));
     }
 
     spdlog::info("TSubGraph is created!");

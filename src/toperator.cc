@@ -2,9 +2,13 @@
 #include "utils.h"
 #include "spdlog/spdlog.h"
 
-TOperator::TOperator(const tflite::Operator* op) {
-    operator_ = op;
+std::map<tflite::BuiltinOperator, func_ptr> OperatorManager::op_map;
+//std::map<tflite::BuiltinOperator, int> OperatorManager::op_map = {};
+//std::map<int, int> OperatorManager::op_map;
+bool OperatorManager::op_map_init = false;
 
+TOperator::TOperator(const tflite::Operator* op, const int index)
+        : operator_(op), operator_index_(index) {
     opcode_index_ = operator_->opcode_index();
 
     for (auto i : *operator_->inputs()) {

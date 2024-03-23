@@ -3,13 +3,19 @@
 
 TModel::TModel(const char* buf) {
     model_ = tflite::GetModel(buf);
+
+    for (auto sg : *(model_->subgraphs())) {
+        subgraphs_.push_back(std::make_shared<TSubGraph>(sg));
+    }
+
+    spdlog::info("TModel is created!");
 }
 
 TModel::~TModel(void) {
-    delete [] model_;
 }
 
 void TModel::display_info(void) {
+    spdlog::info("Model --------------------------------------");
     // Field; description
     auto desc = model_->description();
     if (desc != nullptr) {
@@ -36,4 +42,9 @@ void TModel::display_info(void) {
     if (operator_codes != nullptr) {
         spdlog::info("# of operator_codes: {}", operator_codes->size());
     }
+
+    for (auto& sg : subgraphs_) {
+        sg->display_info();
+    }
+    spdlog::info("--------------------------------------------");
 }

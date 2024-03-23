@@ -17,7 +17,7 @@ TCore::TCore(const char* filename) {
         infile.read(tmodel_buf_, length);
         infile.close();
 
-        tmodel_ = new TModel(tmodel_buf_);
+        tmodel_ = std::make_shared<TModel>(tmodel_buf_);
     }
 }
 

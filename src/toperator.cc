@@ -2,10 +2,7 @@
 #include "utils.h"
 #include "spdlog/spdlog.h"
 
-std::map<tflite::BuiltinOperator, func_ptr> OperatorManager::op_map;
-//std::map<tflite::BuiltinOperator, int> OperatorManager::op_map = {};
-//std::map<int, int> OperatorManager::op_map;
-bool OperatorManager::op_map_init = false;
+//OperatorManager opmng;
 
 TOperator::TOperator(const tflite::Operator* op, const int index)
         : operator_(op), operator_index_(index) {
@@ -40,4 +37,9 @@ void TOperator::display_info(void) {
     spdlog::info("outputs         : {}", s);
     
     spdlog::info("--------------------------------------------");
+}
+
+OperatorManager& OpManager() {
+    static OperatorManager opmng;
+    return opmng;
 }

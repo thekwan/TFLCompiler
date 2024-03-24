@@ -1,4 +1,5 @@
 #include "tsubgraph.h"
+#include "toperator.h"
 #include "spdlog/spdlog.h"
 
 TSubGraph::TSubGraph(const tflite::SubGraph* sg,
@@ -12,7 +13,10 @@ TSubGraph::TSubGraph(const tflite::SubGraph* sg,
 
     i = 0;
     for (auto o : *subgraph_->operators()) {
-        operators_.push_back(std::make_shared<TOperator>(o, i++));
+        auto opcode = o->opcode_index();
+        auto operator_code = operator_codes->Get(opcode);
+        auto func = OpManager().GetCreateOpFunc(operator_code->builtin_code());
+        operators_.push_back(func(o, i++));
     }
 
     spdlog::info("TSubGraph is created!");

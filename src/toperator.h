@@ -24,26 +24,31 @@ typedef std::shared_ptr<TOperator>(*func_ptr)(const tflite::Operator*, int);
 
 class OperatorManager {
 public:
-    OperatorManager(tflite::BuiltinOperator opcode, func_ptr f) {
-        RegisterOperator(opcode, f);
-        spdlog::info("Operator Constructor: {}", OperatorManager::op_map.size());
-    }
-    ~OperatorManager(void) {
+    OperatorManager() { op_map = {}; }
+    ~OperatorManager() {}
+
+    void RegisterOperator(tflite::BuiltinOperator opcode, func_ptr f) {
+        assert(op_map.find(opcode) == op_map.end());
+        op_map.insert({opcode, f});
+        spdlog::info("op_map.size = {}", op_map.size());
     }
 
-    void RegisterOperator(tflite::BuiltinOperator opcode,
-            func_ptr f) {
-        if (op_map_init == false) {
-            OperatorManager::op_map = {};
-            op_map_init = true;
-        }
-        OperatorManager::op_map.insert({opcode, f});
+    func_ptr GetCreateOpFunc(tflite::BuiltinOperator opcode) {
+        assert(op_map.find(opcode) != op_map.end());
+        return op_map[opcode];
     }
-    static std::map<tflite::BuiltinOperator, func_ptr> op_map;
-    static bool op_map_init;
 private:
+    std::map<tflite::BuiltinOperator, func_ptr> op_map;
 };
-//extern OperatorManager opmng;
+
+OperatorManager& OpManager();
+
+class OperatorRegister {
+public:
+    OperatorRegister(tflite::BuiltinOperator opcode, func_ptr f) {
+        OpManager().RegisterOperator(opcode, f);
+    }
+};
 
 using TOperatorPList = std::vector<std::shared_ptr<TOperator>>;
 #endif
